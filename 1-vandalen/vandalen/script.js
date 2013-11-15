@@ -1,9 +1,9 @@
 "use strict";
 
-var makePerson = function(persArr){
+var makePerson = function (persArr) {
 
 
 	// Din kod här...
 
-}
+};
 
