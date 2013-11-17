@@ -1,19 +1,23 @@
 "use strict";
-
-window.onload = function(){
-
-	// I denna funktion ska du skriva koden för att hantera "spelet"
-	var convertString = function(str){
-		// Plats för förändring.		
+window.onload = function () {
+	var convertString = function (str) {
 		// Returnera den konverterade strängen.
-		// Vid fel, kasta ett undantag med ett meddelande till användaren. 
-	
-
-
-
-
-
-
+		// Vid fel, kasta ett undantag med ett meddelande till användaren.
+        if (str !== "") {
+            var chars = str.split("");
+            for (var i = 0; i < chars.length; i++) {
+                if ((chars[i] == "a") || (chars[i] == "A")) {
+                    chars [i] = "#";
+                } else if (chars[i] === chars[i].toLowerCase()) {
+                    chars[i] = chars[i].toUpperCase();
+                } else if (chars[i] === chars[i].toUpperCase()) {
+                    chars[i] = chars[i].toLowerCase();
+                }
+            }
+            return chars.join("");
+        } else {
+            throw Error("Du har inte skrivit något.");
+        }
 	};
 	// ------------------------------------------------------------------------------
 
@@ -24,7 +28,7 @@ window.onload = function(){
 	var submit = document.querySelector("#send");
 
 	// Vi kopplar en eventhanterare till formulärets skickaknapp som kör en anonym funktion.
-	submit.addEventListener("click", function(e){
+	submit.addEventListener("click", function (e) {
 		e.preventDefault(); // Hindra formuläret från att skickas till servern. Vi hanterar allt på klienten.
 
 		p.classList.remove( "error");
