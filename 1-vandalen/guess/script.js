@@ -1,31 +1,28 @@
 "use strict";
 window.onload = function () {
-    var min = 1;
-    var max = 100;
-	var secret = Math.floor(Math.random() * (max-min) + 1) + min;
-    var tries = 0;
-	var guess = function (number) {
-        number = parseFloat(number);
-        if ((number >= min) && (number <= max)) {
-            tries++;
-            if (number === secret) {
-                switch (tries) {
+    var min = 1, max = 100,
+        secret = Math.floor(Math.random() * (max - min) + 1) + min,
+        tries = 0,
+        guess = function (number) {
+            number = parseInt(number);
+            if ((number >= min) && (number <= max)) { // om gissningern är inom intervallet
+                tries++; // räkna gissningen
+                if (number === secret) { // om det är rätt gissat
+                    switch (tries) { // singular/plural
                     case 1:
                         return [true, "Grattis du vann! Det hemliga talet var " + secret + " och du behövde 1 gissning för att hitta det."];
-                        break;
                     default:
                         return [true, "Grattis du vann! Det hemliga talet var " + secret + " och du behövde " + tries + " gissningar för att hitta det."];
-                        break;
+                    }
+                } else if (number < secret) {
+                    return [false, "Det hemliga talet är högre! Antal gissningar: " + tries];
+                } else if (number > secret) {
+                    return [false, "Det hemliga talet är lägre! Antal gissningar: " + tries];
                 }
-            } else if (number < secret) {
-                return [false, "Det hemliga talet är högre!"];
-            } else if (number > secret) {
-                return [false, "Det hemliga talet är lägre!"];
+            } else {
+                return [false, "Din gissning är utanför intervallet " + min + " - " + max];
             }
-        } else {
-            return [false, "Din gissning är utanför intervallet " + min + " - " + max];
-        }
-	};
+        };
 	
 	// ------------------------------------------------------------------------------
 
