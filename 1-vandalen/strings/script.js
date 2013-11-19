@@ -1,16 +1,14 @@
 "use strict";
 window.onload = function () {
 	var convertString = function (str) {
-		// Returnera den konverterade strängen.
-		// Vid fel, kasta ett undantag med ett meddelande till användaren.
-        if (str !== "") {
-            var chars = str.split("");
+        if (str !== "") { // om användaren har skrivit något
+            var chars = str.split(""); // delar upp det användaren skrev i enskilda tecken
             for (var i = 0; i < chars.length; i++) {
                 if ((chars[i] == "a") || (chars[i] == "A")) {
                     chars [i] = "#";
-                } else if (chars[i] === chars[i].toLowerCase()) {
+                } else if (chars[i] === chars[i].toLowerCase()) { // om genemen
                     chars[i] = chars[i].toUpperCase();
-                } else if (chars[i] === chars[i].toUpperCase()) {
+                } else if (chars[i] === chars[i].toUpperCase()) { // om versal
                     chars[i] = chars[i].toLowerCase();
                 }
             }

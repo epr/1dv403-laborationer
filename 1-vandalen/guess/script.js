@@ -4,7 +4,7 @@ window.onload = function () {
         secret = Math.floor(Math.random() * (max - min) + 1) + min,
         tries = 0,
         guess = function (number) {
-            number = parseInt(number);
+            number = +number;
             if ((number >= min) && (number <= max)) { // om gissningern är inom intervallet
                 tries++; // räkna gissningen
                 if (number === secret) { // om det är rätt gissat
