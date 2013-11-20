@@ -8,9 +8,11 @@ window.onload = function () {
             (inputArray[1].length === 2) &&
             (inputArray[1] > 0) &&
             (inputArray[1] < 13) &&
+            (inputArray[1].split(".").length === 1) && // godkänner inte t.ex. 2000-1.-30
             (inputArray[2].length === 2) &&
             (inputArray[2] > 0) &&
-            (inputArray[2] < 32)) {
+            (inputArray[2] < 32) &&
+            (inputArray[2].split(".").length === 1)) {
             var inputDate = new Date(inputArray[0], // använder födelseåret för att kunna kontrollera antalet dager i månaden
                                      inputArray[1] - 1, // månader är nollbaserade because logic
                                      inputArray[2]);
