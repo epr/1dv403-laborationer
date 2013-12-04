@@ -1,0 +1,25 @@
+h1 {
+    width: 300px;
+    margin: 1em auto;
+    text-align: center;
+}
+main {
+    width: 600px;
+    margin: 0 auto;
+    border: 2px solid #ccc;
+    overflow: auto;
+}
+article {
+    margin: 10px 10px 0;
+    border: 2px solid green;
+}
+textarea {
+    width: 578px; height: 150px;
+    display: block;
+    margin: 10px;
+    padding: 0;
+}
+button {
+    float: right;
+    margin: 0 10px 10px;
+}
