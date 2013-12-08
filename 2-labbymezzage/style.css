@@ -27,6 +27,7 @@ section > p {
 article > p {
     padding: 10px;
     margin: 0;
+    word-wrap: break-word;
 }
 time {
     float: right;
