@@ -1,0 +1,28 @@
+div {
+    border: 2px solid #ccc;
+    display: inline-block;
+}
+ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+}
+li {
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+a {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
+img {
+    padding: 1em;
+    border: 2px solid #ccc;
+    vertical-align: middle;
+}
+img[src="pics/0.png"]:hover {
+    border-color: #999;
+}
