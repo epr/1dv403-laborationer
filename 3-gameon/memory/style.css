@@ -1,6 +1,10 @@
+button {
+    display: block;
+}
 div {
     border: 2px solid #ccc;
     display: inline-block;
+    padding: 1px;
 }
 ol {
     list-style: none;
@@ -10,19 +14,37 @@ ol {
 }
 li {
     float: left;
-    margin: 0;
-    padding: 0;
-}
-a {
-    display: inline-block;
-    margin: 0;
-    padding: 0;
 }
 img {
     padding: 1em;
-    border: 2px solid #ccc;
+    margin: 1px;
+    border: 2px solid #999;
     vertical-align: middle;
+}
+img:hover {
+    cursor: default;
+}
+img[src="pics/0.png"] {
+    border-color: #ccc;
 }
 img[src="pics/0.png"]:hover {
     border-color: #999;
+    cursor: pointer;
+}
+img.found {
+    opacity: .5;
+    cursor: default;
+}
+aside {
+    display: inline-block;
+    vertical-align: top;
+}
+h2 {
+    opacity: .5;
+}
+h2.current {
+    opacity: 1;
+}
+h2.current:before {
+    content: "→ ";
 }
