@@ -38,13 +38,26 @@ img.found {
 aside {
     display: inline-block;
     vertical-align: top;
+    overflow: auto;
+}
+h2, h2 + p {
+    opacity: .5;
+    margin: 0 0 2px;
+    padding: .78em;
+    font: 1.4em "Helvetica";
+    border: 2px solid #999;
+    float: left;
 }
 h2 {
-    opacity: .5;
+    border-right: none;
+    clear: left;
 }
-h2.current {
+h2 + p {
+    border-left: none;
+}
+h2.current, h2.current + p {
     opacity: 1;
 }
-h2.current:before {
+/*h2.current:before {
     content: "→ ";
-}
+}*/

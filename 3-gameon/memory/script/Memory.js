@@ -5,11 +5,11 @@ var Memory = {
     one : 0,
     two : 0,
     turn : 1,
+    found : 0,
     init : function () {
         "use strict";
         var table,
-            button = document.getElementById("new"),
-            scoreBoard = document.getElementById("score");
+            button = document.getElementById("new");
         if ((Memory.rows * Memory.cols < 17) && (Memory.rows * Memory.cols % 2 === 0)) {
             table = Memory.createTable(Memory.rows, Memory.cols);
             Memory.displayGame(table);
@@ -22,6 +22,7 @@ var Memory = {
         Memory.one = 0;
         Memory.two = 0;
         Memory.turn = 1;
+        Memory.found = 0;
         Memory.updateScore();
     },
     createTable : function (rows, cols) {
@@ -139,7 +140,6 @@ var Memory = {
     },
     flippedCard : null,
     timer : null,
-    found : 0,
     updateScore : function () {
         "use strict";
         var aside = document.getElementById("score"),
@@ -147,7 +147,7 @@ var Memory = {
             p;
         aside.innerHTML = "";
         h2 = document.createElement("h2");
-        h2.innerHTML = "Player 1";
+        h2.innerHTML = "Player 1:";
         if (Memory.turn === 1) {
             h2.className = "current";
         }
@@ -156,7 +156,7 @@ var Memory = {
         aside.appendChild(h2);
         aside.appendChild(p);
         h2 = document.createElement("h2");
-        h2.innerHTML = "Player 2";
+        h2.innerHTML = "Player 2:";
         if (Memory.turn === 2) {
             h2.className = "current";
         }
