@@ -8,21 +8,21 @@
 <body>
     <form method="post" action="http://voyager.lnu.se/tekinet/kurser/dtt/wp_webbteknik/process_form.php">
         <label for="name">Förnamn</label>
-        <input type="text" id="name" name="Förnamn">
+        <input type="text" id="name" name="Förnamn" required>
         <label for="surname">Efternamn</label>
-        <input type="text" id="surname" name="Efternamn">
+        <input type="text" id="surname" name="Efternamn" required>
         <label for="code">Postnummer</label>
-        <input type="text" id="code" name="Postnummer">
+        <input type="text" id="code" name="Postnummer" required>
         <label for="email">E-post</label>
-        <input type="email" id="email" name="E-post">
+        <input type="email" id="email" name="E-post" required>
         <label for="price">Prismodell</label>
         <select id="price" name="Prismodell">
             <option value="Låg">Låg</option>
             <option value="Mellan">Mellan</option>
             <option value="Hög">Hög</option>
         </select>
-        <input type="submit" value="Genomför köp">
+        <input type="submit" id="submit" value="Genomför köp">
     </form>
-    <script src="script/validator.js"></script>
+    <script src="validator.js"></script>
 </body>
 </html>
