@@ -6,19 +6,23 @@ label {
     display: block;
 }
 input, select {
-    display: block;
     margin-bottom: 1em;
+}
+input + p {
+    display: inline-block;
+    margin: 0;
+    margin-left: 1em;
+    color: red;
 }
 select {
     width: 20em;
-    /*-webkit-appearance: initial;*/
 }
 option {
     background: white;
 }
 input[type=text], input[type=email], select {
     border-radius: 5px;
-    border: 1px solid #ccc;
+    border: 2px solid #ccc;
     font-size: 1.2em;
     width: 15em;
     height: 1.5em;
@@ -26,6 +30,7 @@ input[type=text], input[type=email], select {
 input[type=submit] {
     background: linear-gradient(to bottom, #faa51a, #f47a20);
     color: white;
+    display: block;
     border: none;
     font-size: 1em;
     height: 2em;
@@ -41,4 +46,12 @@ input[type=submit]:hover, input[type=submit]:focus {
 input[type=submit]:active {
 	color: #fcd3a5;
     background: linear-gradient(to top, #faa51a, #f47a20);
+}
+form .pass {
+    border-color: green;
+    color: green;
+}
+form .fail {
+    border-color: red;
+    color: red;
 }

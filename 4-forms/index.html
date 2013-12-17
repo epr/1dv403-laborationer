@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <form method="post" action="http://voyager.lnu.se/tekinet/kurser/dtt/wp_webbteknik/process_form.php">
+    <form method="post" id="form" action="http://voyager.lnu.se/tekinet/kurser/dtt/wp_webbteknik/process_form.php">
         <label for="name">Förnamn</label>
         <input type="text" id="name" name="Förnamn" required>
         <label for="surname">Efternamn</label>
@@ -21,7 +21,7 @@
             <option value="Mellan">Mellan</option>
             <option value="Hög">Hög</option>
         </select>
-        <input type="submit" id="submit" value="Genomför köp">
+        <input type="submit" id="send" value="Genomför köp">
     </form>
     <script src="validator.js"></script>
 </body>

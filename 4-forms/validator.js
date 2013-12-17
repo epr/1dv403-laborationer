@@ -1,14 +1,19 @@
 var validator = {
     init : function () {
         "use strict";
-        var submit = document.getElementById("submit"),
+        var form = document.getElementById("form"),
+            submit = document.getElementById("send"),
             name = document.getElementById("name"),
             surname = document.getElementById("surname"),
             code = document.getElementById("code"),
             email = document.getElementById("email");
         submit.addEventListener("click", function (e) {
             e.preventDefault();
-            validator.validateForm();
+            if (validator.validateName(name) && validator.validateName(surname)) {
+                form.submit();
+            }
+            validator.validateCode(code);
+            validator.validateEmail(email);
         }, false);
         name.addEventListener("blur", function () {
             validator.validateName(name);
@@ -23,13 +28,14 @@ var validator = {
             validator.validateEmail(email);
         }, false);
     },
-    validateForm : function () {
-        "use strict";
-    },
     validateName : function (field) {
         "use strict";
         if (field.value === "") {
-            console.log("enter something");
+            validator.failField(field, "Detta fält får inte lämnas blankt");
+            return false;
+        } else {
+            validator.passField(field);
+            return true;
         }
     },
     validateCode : function (field) {
@@ -37,6 +43,25 @@ var validator = {
     },
     validateEmail : function (field) {
         "use strict";
+    },
+    failField : function (field, text) {
+        "use strict";
+        var error,
+            message;
+        if (field.nextElementSibling.tagName !== "P") {
+            error = document.createElement("p");
+            message = document.createTextNode(text);
+            error.appendChild(message);
+            field.parentNode.insertBefore(error, field.nextSibling);
+            field.className = "fail";
+        }
+    },
+    passField : function (field) {
+        "use strict";
+        field.className = "pass";
+        if (field.nextElementSibling.tagName === "P") {
+            field.parentNode.removeChild(field.nextElementSibling);
+        }
     }
 };
 document.onload = validator.init();
