@@ -12,12 +12,11 @@ var validator = {
             e.preventDefault();
             var nameCheck = validator.validateName(name),
                 surnameCheck = validator.validateName(surname),
-                codeCheck = validator.validateCode(code);
-            if (nameCheck && surnameCheck && codeCheck) {
+                codeCheck = validator.validateCode(code),
+                emailCheck = validator.validateEmail(email);
+            if (nameCheck && surnameCheck && codeCheck && emailCheck) {
                 validator.showModal(form);
             }
-            validator.validateCode(code);
-            validator.validateEmail(email);
         }, false);
         name.addEventListener("blur", function () {
             validator.validateName(name);
@@ -79,7 +78,7 @@ var validator = {
     validateEmail : function (field) {
         "use strict";
         var value = field.value;
-        if (value.split("@").length === 2) {
+        if ((value.split("@").length === 2) && (value.split("@")[0].length > 0) && (value.split("@")[1].length > 1)) {
             validator.passField(field);
             return true;
         } else {

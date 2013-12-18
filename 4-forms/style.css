@@ -99,6 +99,7 @@ div.modal button.close {
     background: transparent;
     border: 0;
     color: #999;
+    cursor: pointer;
 }
 div.modal button.close:after {
     content: "×";
