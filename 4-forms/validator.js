@@ -137,6 +137,10 @@ var validator = {
             cancel = document.createElement("button"),
             cancelText = document.createTextNode("Avbryt");
         cover.className = "cover";
+        cover.addEventListener("click", function () {
+            document.body.removeChild(cover);
+            document.body.removeChild(modal);
+        }, false);
         modal.className = "modal";
         close.className = "close";
         close.addEventListener("click", function () {
