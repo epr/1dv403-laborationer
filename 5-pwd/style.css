@@ -1,0 +1,76 @@
+/*icons from http://dakirby309.deviantart.com/art/Metro-UI-Icon-Set-725-Icons-280724102*/
+/*Desktop*/
+body {
+    margin: 0;
+}
+main {
+    width: 1024px;
+    height: 640px;
+    background: #bada55;
+    position: relative;
+}
+footer {
+    width: 100%;
+    background: #55bada;
+    height: 64px;
+    position: absolute;
+    bottom: 0;
+}
+footer button {
+    border: 0;
+    height: 64px;
+    width: 64px;
+}
+/*Icons*/
+#gallery-icon {
+    background: url("img/gallery.png");
+    background-size: 100%;
+}
+#rss-icon {
+    background: url("img/rss.png");
+    background-size: 100%;
+}
+/*App*/
+.app {
+    width: 300px;
+    height: 200px;
+}
+.app header {
+    width: 100%;
+    height: 32px;
+    background-size: 100%;
+}
+.app header:before {
+    content: "";
+    height: 32px;
+    width: 32px;
+    background-size: 100%;
+    display: inline-block;
+}
+.app h2 {
+    margin: 0;
+    font: 1em "Helvetica";
+    vertical-align: top;
+    padding: 8px;
+    display: inline-block
+}
+/*Gallery app*/
+.gallery-app {
+    background: #ba55da;
+}
+.gallery-app header {
+    background-color: #daba55;
+}
+.gallery-app header:before {
+    background-image: url(img/gallery.png);
+}
+/*RSS app*/
+.rss-app {
+    background: #da55ba;
+}
+.rss-app header {
+    background-color: #55daba;
+}
+.rss-app header:before {
+    background-image: url(img/rss.png);
+}
