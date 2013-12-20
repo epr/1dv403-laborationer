@@ -32,8 +32,7 @@ footer button {
 }
 /*App*/
 .app {
-    width: 300px;
-    height: 200px;
+    position: absolute;
 }
 .app header {
     width: 100%;
