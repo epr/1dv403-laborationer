@@ -21,7 +21,9 @@ var Desktop = {
             topBar = document.createElement("header"),
             appTitle = document.createElement("h2"),
             titleText = document.createTextNode(title),
-            closeApp = document.createElement("button");
+            closeApp = document.createElement("button"),
+            content = document.createElement("article"),
+            statusBar = document.createElement("footer");
         appWindow.classList.add(appClass, "app");
         if ((desktop.clientWidth - appWidth - 10) < Desktop.lastAppPosX) {
             Desktop.lastAppPosX = 10;
