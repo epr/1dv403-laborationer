@@ -1,27 +1,26 @@
-/*icons from http://dakirby309.deviantart.com/art/Metro-UI-Icon-Set-725-Icons-280724102*/
 /*Desktop*/
 body {
     margin: 0;
 }
-main {
+#desktop {
     width: 1024px;
     height: 640px;
     background: #bada55;
     position: relative;
 }
-footer {
+#icon-bar {
     width: 100%;
     background: #55bada;
     height: 64px;
     position: absolute;
     bottom: 0;
 }
-footer button {
+#icon-bar button {
     border: 0;
     height: 64px;
     width: 64px;
 }
-/*Icons*/
+/*Icons*/ /*icons from http://dakirby309.deviantart.com/art/Metro-UI-Icon-Set-725-Icons-280724102*/
 #gallery-icon {
     background: url("img/gallery.png");
     background-size: 100%;
@@ -33,6 +32,7 @@ footer button {
 /*App*/
 .app {
     position: absolute;
+    box-shadow: 2px 2px 10px 0 #222;
 }
 .app header {
     width: 100%;
@@ -51,7 +51,22 @@ footer button {
     font: 1em "Helvetica";
     vertical-align: top;
     padding: 8px;
-    display: inline-block
+    display: inline-block;
+}
+.app .close-app {
+    position: absolute;
+    top: 0; right: 0;
+    margin: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+.app .close-app:after {
+    content: "×";
+    font-size: 2em;
+}
+.app .close-app:active {
+    outline: 0;
 }
 /*Gallery app*/
 .gallery-app {

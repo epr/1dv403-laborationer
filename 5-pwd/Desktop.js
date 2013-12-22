@@ -1,3 +1,4 @@
+/*jslint browser:true*/
 var Desktop = {
     lastAppPosX : 10,
     lastAppPosY : 10,
@@ -17,9 +18,10 @@ var Desktop = {
         var desktop = document.getElementById("desktop"),
             iconBar = document.getElementById("icon-bar"),
             appWindow = document.createElement("div"),
-            titleBar = document.createElement("header"),
+            topBar = document.createElement("header"),
             appTitle = document.createElement("h2"),
-            titleText = document.createTextNode(title);
+            titleText = document.createTextNode(title),
+            closeApp = document.createElement("button");
         appWindow.classList.add(appClass, "app");
         if ((desktop.clientWidth - appWidth - 10) < Desktop.lastAppPosX) {
             Desktop.lastAppPosX = 10;
@@ -33,14 +35,22 @@ var Desktop = {
         appWindow.style.height = appHeight + "px";
         Desktop.lastAppPosX += 10;
         Desktop.lastAppPosY += 10;
-        desktop.appendChild(appWindow).appendChild(titleBar).appendChild(appTitle).appendChild(titleText);
-        console.log(desktop.clientWidth);
+        closeApp.className = "close-app";
+        closeApp.addEventListener("click", function () {
+            desktop.removeChild(appWindow);
+        }, false);
+        topBar.appendChild(appTitle).appendChild(titleText);
+        topBar.appendChild(closeApp);
+        appWindow.appendChild(topBar);
+        desktop.appendChild(appWindow);
     },
     openGalleryApp : function () {
+        "use strict";
         Desktop.openApp("Image gallery", "gallery-app", 300, 200);
     },
     openRssApp: function () {
-        Desktop.openApp("Rss feed", "rss-app", 400, 280);
+        "use strict";
+        Desktop.openApp("Rss feed", "rss-app", 200, 280);
     }
 };
 document.load = Desktop.init();
