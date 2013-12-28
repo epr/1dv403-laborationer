@@ -2,6 +2,7 @@
 var Desktop = {
     lastAppPosX : 10,
     lastAppPosY : 10,
+    appZ : 0,
     init : function () {
         "use strict";
         var galleryIcon = document.getElementById("gallery-icon"),
@@ -35,14 +36,14 @@ var Desktop = {
         appWindow.style.top = Desktop.lastAppPosY + "px";
         appWindow.style.width = appWidth + "px";
         appWindow.style.height = appHeight + "px";
+        appWindow.addEventListener("mousedown", Desktop.bringToFront, false);
         Desktop.lastAppPosX += 10;
         Desktop.lastAppPosY += 10;
         closeApp.className = "close-app";
-        closeApp.addEventListener("click", function () {
-            desktop.removeChild(appWindow);
-        }, false);
+        closeApp.addEventListener("click", Desktop.closeApp, false);
         topBar.appendChild(appTitle).appendChild(titleText);
         topBar.appendChild(closeApp);
+        topBar.addEventListener("mousedown", Desktop.moveApp, false);
         appWindow.appendChild(topBar);
         desktop.appendChild(appWindow);
     },
@@ -50,9 +51,38 @@ var Desktop = {
         "use strict";
         Desktop.openApp("Image gallery", "gallery-app", 300, 200);
     },
-    openRssApp: function () {
+    openRssApp : function () {
         "use strict";
         Desktop.openApp("Rss feed", "rss-app", 200, 280);
+    },
+    bringToFront : function () { //brings the selected application window to the top
+        "use strict";
+        Desktop.appZ += 1; //increases the z index counter
+        this.style.zIndex = Desktop.appZ; //updates the z index of the application window
+    },
+    closeApp : function () {
+        "use strict";
+        this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);
+    },
+    moveApp : function (event) { //prepares to move the app
+        "use strict";
+        this.parentNode.style.opacity = 0.7; //decreases the opacity of the application window
+        this.style.cursor = "move"; //changes the mouse cursor to move to help the user
+        var draggedElement = this.parentNode, //saves the dragged element to be referenced when moving
+            xDiff = event.clientX - this.parentNode.offsetLeft, //saves the difference between the position of the window's left edge and the place where the mouse is holding the window on the x axis
+            yDiff = event.clientY - this.parentNode.offsetTop, //saves the difference between the position of the window's top edge and the place where the mouse is holding the window on the y axis
+            moveTheApp = function (event) { //moves the app when the mouse is dragging it
+                draggedElement.style.left = (event.clientX - xDiff) + "px"; //moves the application window on the x axis when the mouse moves on the x axis
+                draggedElement.style.top = (event.clientY - yDiff) + "px"; //moves the application window on the y axis when the mouse moves on the y axis
+            },
+            stopApp = function () { //stops the app from moving when the user drops the application window
+                this.parentNode.style.opacity = 1; //resets the opacity of the application window
+                this.style.cursor = "default"; //resets the mouse cursor
+                document.removeEventListener("mousemove", moveTheApp, false); //removes the move event listener from the document
+                this.removeEventListener("mouseup", stopApp, false); //removes the drop event listener from the application window menubar
+            };
+        this.addEventListener("mouseup", stopApp, false); //listens for when the user drops the application window
+        document.addEventListener("mousemove", moveTheApp, false); //listens when the user moves the mouse in the document
     }
 };
 document.load = Desktop.init();
