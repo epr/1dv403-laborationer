@@ -71,7 +71,7 @@ var Desktop = {
             xDiff = event.clientX - draggedElement.offsetLeft, //saves the difference between the position of the window's left edge and the place where the mouse is holding the window on the x axis
             yDiff = event.clientY - draggedElement.offsetTop, //saves the difference between the position of the window's top edge and the place where the mouse is holding the window on the y axis
             maxLeft = draggedElement.parentNode.clientWidth - draggedElement.clientWidth,
-            maxTop = draggedElement.parentNode.clientHeight - draggedElement.clientHeight,
+            maxTop = draggedElement.parentNode.clientHeight - draggedElement.clientHeight - document.getElementById("icon-bar").clientHeight,
             moveTheApp = function (e) { //moves the app when the mouse is dragging it
                 if (e.clientX - xDiff > 0) {
                     if (e.clientX - xDiff < maxLeft) {
