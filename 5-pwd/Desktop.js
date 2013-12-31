@@ -5,14 +5,8 @@ var Desktop = {
     appZ : 0,
     init : function () {
         "use strict";
-        var galleryIcon = document.getElementById("gallery-icon"),
-            rssIcon = document.getElementById("rss-icon");
-        galleryIcon.addEventListener("click", function (e) {
-            Desktop.openGalleryApp();
-        }, false);
-        rssIcon.addEventListener("click", function (e) {
-            Desktop.openRssApp();
-        }, false);
+        document.getElementById("gallery-icon").addEventListener("click", Desktop.openGalleryApp, false);
+        document.getElementById("rss-icon").addEventListener("click", Desktop.openRssApp, false);
     },
     openApp : function (title, appClass, appWidth, appHeight) {
         "use strict";
@@ -45,15 +39,19 @@ var Desktop = {
         topBar.appendChild(closeApp);
         topBar.addEventListener("mousedown", Desktop.moveApp, false);
         appWindow.appendChild(topBar);
+        appWindow.appendChild(content);
+        appWindow.appendChild(statusBar);
         desktop.appendChild(appWindow);
+        Desktop.bringToFront.call(appWindow); //brins the app window to the front by passing it as "this"
+        return appWindow;
     },
     openGalleryApp : function () {
         "use strict";
-        Desktop.openApp("Image gallery", "gallery-app", 300, 200);
+        var galleryApp = Desktop.openApp("Image gallery", "gallery-app", 300, 200);
     },
     openRssApp : function () {
         "use strict";
-        Desktop.openApp("Rss feed", "rss-app", 200, 280);
+        var RssApp = Desktop.openApp("Rss feed", "rss-app", 200, 280);
     },
     bringToFront : function () { //brings the selected application window to the top
         "use strict";
@@ -63,6 +61,10 @@ var Desktop = {
     closeApp : function () {
         "use strict";
         this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);
+        if (document.getElementsByClassName("app").length === 0) {
+            Desktop.lastAppPosX = 10;
+            Desktop.lastAppPosY = 10;
+        }
     },
     moveApp : function (event) { //prepares to move the app
         "use strict";
