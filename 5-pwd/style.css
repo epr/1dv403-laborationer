@@ -70,6 +70,10 @@ body {
 .app .close-app:active {
     outline: 0;
 }
+.app.moving {
+    opacity: .7;
+    cursor: move;
+}
 /*Gallery app*/
 .gallery-app {
     background: #ba55da;

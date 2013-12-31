@@ -66,7 +66,6 @@ var Desktop = {
     },
     moveApp : function (event) { //prepares to move the app
         "use strict";
-        this.style.cursor = "move"; //changes the mouse cursor to move to help the user
         var draggedElement = this.parentNode, //saves the dragged element to be referenced when moving
             xDiff = event.clientX - draggedElement.offsetLeft, //saves the difference between the position of the window's left edge and the place where the mouse is holding the window on the x axis
             yDiff = event.clientY - draggedElement.offsetTop, //saves the difference between the position of the window's top edge and the place where the mouse is holding the window on the y axis
@@ -93,15 +92,13 @@ var Desktop = {
                 }
             },
             stopApp = function () { //stops the app from moving when the user drops the application window
-                this.parentNode.style.opacity = 1; //resets the opacity of the application window
-                this.style.cursor = "default"; //resets the mouse cursor
+                draggedElement.classList.remove("moving");
                 document.removeEventListener("mousemove", moveTheApp, false); //removes the move event listener from the document
-                this.removeEventListener("mouseup", stopApp, false); //removes the drop event listener from the application window menubar
+                document.removeEventListener("mouseup", stopApp, false); //removes the drop event listener from the application window menubar
             };
-        draggedElement.style.opacity = 0.7; //decreases the opacity of the application window
-        this.addEventListener("mouseup", stopApp, false); //listens for when the user drops the application window
+        draggedElement.classList.add("moving");
         document.addEventListener("mousemove", moveTheApp, false); //listens when the user moves the mouse in the document
-        console.log(xDiff);
+        document.addEventListener("mouseup", stopApp, false); //listens for when the user drops the application window
     }
 };
 document.load = Desktop.init();
