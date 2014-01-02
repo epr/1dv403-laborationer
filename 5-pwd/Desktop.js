@@ -16,6 +16,7 @@ var Desktop = {
             topBar = document.createElement("header"),
             appTitle = document.createElement("h2"),
             titleText = document.createTextNode(title),
+            maximizeApp = document.createElement("button"),
             closeApp = document.createElement("button"),
             content = document.createElement("article"),
             statusBar = document.createElement("footer");
@@ -33,10 +34,13 @@ var Desktop = {
         appWindow.addEventListener("mousedown", Desktop.bringToFront, false);
         Desktop.lastAppPosX += 10;
         Desktop.lastAppPosY += 10;
-        closeApp.className = "close-app";
+        maximizeApp.className = "icon-expand";
+        maximizeApp.addEventListener("click", Desktop.maximizeApp, false);
+        closeApp.className = "icon-close";
         closeApp.addEventListener("click", Desktop.closeApp, false);
         topBar.appendChild(appTitle).appendChild(titleText);
         topBar.appendChild(closeApp);
+        topBar.appendChild(maximizeApp);
         topBar.addEventListener("mousedown", Desktop.moveApp, false);
         appWindow.appendChild(topBar);
         appWindow.appendChild(content);
@@ -51,7 +55,7 @@ var Desktop = {
     },
     openRssApp : function () {
         "use strict";
-        var RssApp = Desktop.openApp("Rss feed", "rss-app", 200, 280);
+        var rssApp = Desktop.openApp("Rss feed", "rss-app", 200, 280);
     },
     bringToFront : function () { //brings the selected application window to the top
         "use strict";
@@ -65,6 +69,32 @@ var Desktop = {
             Desktop.lastAppPosX = 10;
             Desktop.lastAppPosY = 10;
         }
+    },
+    maximizeApp : function () {
+        "use strict";
+        var app = this.parentNode.parentNode,
+            appWidth = app.clientWidth,
+            appHeight = app.clientHeight,
+            appLeft = app.offsetLeft,
+            appTop = app.offsetTop,
+            unmaximizeApp = function () {
+                app.style.left = appLeft + "px";
+                app.style.top = appTop + "px";
+                app.style.width = appWidth + "px";
+                app.style.height = appHeight + "px";
+                this.removeEventListener("click", unmaximizeApp, false);
+                this.addEventListener("click", Desktop.maximizeApp, false);
+                this.parentNode.addEventListener("mousedown", Desktop.moveApp, false);
+                this.className = "icon-expand";
+            };
+        this.removeEventListener("click", Desktop.maximizeApp, false);
+        this.addEventListener("click", unmaximizeApp, false);
+        this.parentNode.removeEventListener("mousedown", Desktop.moveApp, false);
+        this.className = "icon-contract";
+        app.style.left = "0px";
+        app.style.top = "0px";
+        app.style.width = app.parentNode.clientWidth + "px";
+        app.style.height = app.parentNode.clientHeight - document.getElementById("icon-bar").clientHeight + "px";
     },
     moveApp : function (event) { //prepares to move the app
         "use strict";
