@@ -141,14 +141,24 @@ var Desktop = {
         var resizedElement = this.parentNode.parentNode,
             xDiff = resizedElement.clientWidth - event.clientX,
             yDiff = resizedElement.clientHeight - event.clientY,
+            maxWidth = resizedElement.parentNode.clientWidth - resizedElement.offsetLeft,
+            maxHeight = resizedElement.parentNode.clientHeight - resizedElement.offsetTop - document.getElementById("icon-bar").clientHeight,
             resizeTheApp = function (e) {
                 if (e.clientX + xDiff > 200) {
-                    resizedElement.style.width = (e.clientX + xDiff) + "px";
+                    if (e.clientX + xDiff < maxWidth) {
+                        resizedElement.style.width = (e.clientX + xDiff) + "px";
+                    } else {
+                        resizedElement.style.width = maxWidth + "px";
+                    }
                 } else {
                     resizedElement.style.width = "200px";
                 }
                 if (e.clientY + yDiff > 200) {
-                    resizedElement.style.height = (e.clientY + yDiff) + "px";
+                    if (e.clientY + yDiff < maxHeight) {
+                        resizedElement.style.height = (e.clientY + yDiff) + "px";
+                    } else {
+                        resizedElement.style.height = maxHeight + "px";
+                    }
                 } else {
                     resizedElement.style.height = "200px";
                 }
