@@ -8,6 +8,14 @@ var Desktop = {
         document.getElementById("gallery-icon").addEventListener("click", Desktop.openGalleryApp, false);
         document.getElementById("rss-icon").addEventListener("click", Desktop.openRssApp, false);
     },
+    openGalleryApp : function () {
+        "use strict";
+        var galleryApp = Desktop.openApp("Image gallery", "gallery-app", 300, 200);
+    },
+    openRssApp : function () {
+        "use strict";
+        var rssApp = Desktop.openApp("Rss feed", "rss-app", 200, 280);
+    },
     openApp : function (title, appClass, appWidth, appHeight) {
         "use strict";
         var desktop = document.getElementById("desktop"),
@@ -19,7 +27,8 @@ var Desktop = {
             maximizeApp = document.createElement("button"),
             closeApp = document.createElement("button"),
             content = document.createElement("article"),
-            statusBar = document.createElement("footer");
+            statusBar = document.createElement("footer"),
+            resizeApp = document.createElement("button");
         appWindow.classList.add(appClass, "app");
         if ((desktop.clientWidth - appWidth - 10) < Desktop.lastAppPosX) {
             Desktop.lastAppPosX = 10;
@@ -42,20 +51,14 @@ var Desktop = {
         topBar.appendChild(closeApp);
         topBar.appendChild(maximizeApp);
         topBar.addEventListener("mousedown", Desktop.moveApp, false);
+        resizeApp.addEventListener("mousedown", Desktop.resizeApp, false);
+        statusBar.appendChild(resizeApp);
         appWindow.appendChild(topBar);
         appWindow.appendChild(content);
         appWindow.appendChild(statusBar);
         desktop.appendChild(appWindow);
         Desktop.bringToFront.call(appWindow); //brins the app window to the front by passing it as "this"
         return appWindow;
-    },
-    openGalleryApp : function () {
-        "use strict";
-        var galleryApp = Desktop.openApp("Image gallery", "gallery-app", 300, 200);
-    },
-    openRssApp : function () {
-        "use strict";
-        var rssApp = Desktop.openApp("Rss feed", "rss-app", 200, 280);
     },
     bringToFront : function () { //brings the selected application window to the top
         "use strict";
@@ -68,6 +71,7 @@ var Desktop = {
         if (document.getElementsByClassName("app").length === 0) {
             Desktop.lastAppPosX = 10;
             Desktop.lastAppPosY = 10;
+            Desktop.appZ = 0;
         }
     },
     maximizeApp : function () {
@@ -131,6 +135,30 @@ var Desktop = {
         draggedElement.classList.add("moving");
         document.addEventListener("mousemove", moveTheApp, false); //listens when the user moves the mouse in the document
         document.addEventListener("mouseup", stopApp, false); //listens for when the user drops the application window
+    },
+    resizeApp : function (event) {
+        "use strict";
+        var resizedElement = this.parentNode.parentNode,
+            xDiff = resizedElement.clientWidth - event.clientX,
+            yDiff = resizedElement.clientHeight - event.clientY,
+            resizeTheApp = function (e) {
+                if (e.clientX + xDiff > 200) {
+                    resizedElement.style.width = (e.clientX + xDiff) + "px";
+                } else {
+                    resizedElement.style.width = "200px";
+                }
+                if (e.clientY + yDiff > 200) {
+                    resizedElement.style.height = (e.clientY + yDiff) + "px";
+                } else {
+                    resizedElement.style.height = "200px";
+                }
+            },
+            leaveApp = function () {
+                document.removeEventListener("mousemove", resizeTheApp, false);
+                document.removeEventListener("mouseup", leaveApp, false);
+            };
+        document.addEventListener("mousemove", resizeTheApp, false);
+        document.addEventListener("mouseup", leaveApp, false);
     }
 };
 document.load = Desktop.init();
