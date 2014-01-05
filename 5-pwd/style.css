@@ -67,6 +67,18 @@ body {
 .app {
     position: absolute;
     box-shadow: 0 0 2px 0 #222;
+    border: 1px solid #333;
+}
+.app.moving {
+    opacity: .7;
+    cursor: move;
+}
+.app.resizing {
+    border-color: #ccc;
+    cursor: nwse-resize;
+}
+.app.resizing footer button {
+    cursor: nwse-resize;
 }
 .app header {
     width: 100%;
@@ -121,9 +133,11 @@ body {
     padding: 8px;
     font-size: 16px;
 }
-.app.moving {
-    opacity: .7;
-    cursor: move;
+.app article {
+    position: absolute;
+    top: 32px; bottom: 32px; left: 0; right: 0;
+    overflow: auto;
+    word-wrap: break-word;
 }
 .app footer {
     width: 100%;

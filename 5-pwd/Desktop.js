@@ -10,11 +10,26 @@ var Desktop = {
     },
     openGalleryApp : function () {
         "use strict";
-        var galleryApp = Desktop.openApp("Image gallery", "gallery-app", 300, 200);
+        var galleryApp = Desktop.openApp("Image gallery", "gallery-app", 300, 200),
+            xhr = new XMLHttpRequest(),
+            images,
+            i;
+        xhr.addEventListener("readystatechange", function () {
+            if (xhr.readyState === 4) {
+                images = JSON.parse(xhr.responseText);
+                for (i = 0; i < images.length; i += 1) {
+                    console.log(images[i].URL);
+                }
+            }
+        }, false);
+        xhr.open("get", "http://homepage.lnu.se/staff/tstjo/labbyServer/imgviewer/", true);
+        //xhr.send();
     },
     openRssApp : function () {
         "use strict";
         var rssApp = Desktop.openApp("Rss feed", "rss-app", 200, 280);
+        console.log(rssApp.content);
+        console.log(rssApp.footer);
     },
     openApp : function (title, appClass, appWidth, appHeight) {
         "use strict";
@@ -58,7 +73,7 @@ var Desktop = {
         appWindow.appendChild(statusBar);
         desktop.appendChild(appWindow);
         Desktop.bringToFront.call(appWindow); //brins the app window to the front by passing it as "this"
-        return appWindow;
+        return {"app" : appWindow, "content" : content, "footer" : statusBar};
     },
     bringToFront : function () { //brings the selected application window to the top
         "use strict";
@@ -164,9 +179,11 @@ var Desktop = {
                 }
             },
             leaveApp = function () {
+                resizedElement.classList.remove("resizing");
                 document.removeEventListener("mousemove", resizeTheApp, false);
                 document.removeEventListener("mouseup", leaveApp, false);
             };
+        resizedElement.classList.add("resizing");
         document.addEventListener("mousemove", resizeTheApp, false);
         document.addEventListener("mouseup", leaveApp, false);
     }
