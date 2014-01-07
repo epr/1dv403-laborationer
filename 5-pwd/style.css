@@ -169,6 +169,15 @@ body {
     height: 16px;
     font-size: 16px;
 }
+.app footer button:hover {
+    cursor: nwse-resize;
+}
+.app footer p {
+    margin: 0;
+}
+.app footer p.loading:before {
+    content: url("loader.gif");
+}
 /*Gallery app*/
 .gallery-app {
     background: #ba55da;
@@ -178,6 +187,21 @@ body {
 }
 .gallery-app header:before {
     background-image: url(img/gallery.png);
+}
+.gallery-app article {
+    padding: 4px 2px;
+}
+.gallery-app article a {
+    margin: 2px 4px;
+    padding: 2px;
+    background: #ddd;
+    border: 1px solid #eee;
+    border-radius: 2px;
+    display: inline-block;
+}
+.gallery-app article a img {
+    margin: auto;
+    display: block;
 }
 /*RSS app*/
 .rss-app {

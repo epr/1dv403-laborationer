@@ -15,18 +15,35 @@ var Desktop = {
             images,
             i,
             a,
-            img;
+            img,
+            maxW = 0,
+            maxH = 0,
+            loader = setTimeout(function () {
+            galleryApp["status"].classList.add("loading");
+        }, 300);
         xhr.addEventListener("readystatechange", function () {
             if (xhr.readyState === 4) {
                 images = JSON.parse(xhr.responseText);
                 for (i = 0; i < images.length; i += 1) {
+                    if (images[i].thumbWidth > maxW) {
+                        maxW = images[i].thumbWidth;
+                    }
+                    if (images[i].thumbHeight > maxH) {
+                        maxH = images[i].thumbHeight;
+                    }
+                }
+                for (i = 0; i < images.length; i += 1) {
                     a = document.createElement("a");
                     a.setAttribute("href", images[i].URL);
+                    a.style.width = maxW + "px";
+                    a.style.height = maxH + "px";
                     img = document.createElement("img");
                     img.setAttribute("src", images[i].thumbURL);
                     a.appendChild(img);
-                    galleryApp.content.appendChild(a);
+                    galleryApp["content"].appendChild(a);
                 }
+                clearTimeout(loader);
+                galleryApp["status"].classList.remove("loading");
             }
         }, false);
         xhr.open("get", "http://homepage.lnu.se/staff/tstjo/labbyServer/imgviewer/", true);
@@ -35,8 +52,6 @@ var Desktop = {
     openRssApp : function () {
         "use strict";
         var rssApp = Desktop.openApp("Rss feed", "rss-app", 200, 280);
-        console.log(rssApp.content);
-        console.log(rssApp.footer);
     },
     openApp : function (title, appClass, appWidth, appHeight) {
         "use strict";
@@ -50,6 +65,7 @@ var Desktop = {
             closeApp = document.createElement("button"),
             content = document.createElement("article"),
             statusBar = document.createElement("footer"),
+            statusText = document.createElement("p"),
             resizeApp = document.createElement("button");
         appWindow.classList.add(appClass, "app");
         if ((desktop.clientWidth - appWidth - 10) < Desktop.lastAppPosX) {
@@ -75,13 +91,14 @@ var Desktop = {
         topBar.addEventListener("mousedown", Desktop.moveApp, false);
         resizeApp.className = "icon-resize";
         resizeApp.addEventListener("mousedown", Desktop.resizeApp, false);
+        statusBar.appendChild(statusText);
         statusBar.appendChild(resizeApp);
         appWindow.appendChild(topBar);
         appWindow.appendChild(content);
         appWindow.appendChild(statusBar);
         desktop.appendChild(appWindow);
         Desktop.bringToFront.call(appWindow); //brins the app window to the front by passing it as "this"
-        return {"app" : appWindow, "content" : content, "footer" : statusBar};
+        return {"app" : appWindow, "content" : content, "status" : statusText};
     },
     bringToFront : function () { //brings the selected application window to the top
         "use strict";
@@ -130,8 +147,10 @@ var Desktop = {
         var draggedElement = this.parentNode, //saves the dragged element to be referenced when moving
             xDiff = event.clientX - draggedElement.offsetLeft, //saves the difference between the position of the window's left edge and the place where the mouse is holding the window on the x axis
             yDiff = event.clientY - draggedElement.offsetTop, //saves the difference between the position of the window's top edge and the place where the mouse is holding the window on the y axis
-            maxLeft = draggedElement.parentNode.clientWidth - draggedElement.clientWidth,
-            maxTop = draggedElement.parentNode.clientHeight - draggedElement.clientHeight - document.getElementById("icon-bar").clientHeight,
+            verticalBorders = parseInt(getComputedStyle(draggedElement).getPropertyValue("border-left-width"), 10) + parseInt(getComputedStyle(draggedElement).getPropertyValue("border-right-width"), 10),
+            horizontalBorders = parseInt(getComputedStyle(draggedElement).getPropertyValue("border-top-width"), 10) + parseInt(getComputedStyle(draggedElement).getPropertyValue("border-bottom-width"), 10),
+            maxLeft = draggedElement.parentNode.clientWidth - draggedElement.clientWidth - verticalBorders,
+            maxTop = draggedElement.parentNode.clientHeight - draggedElement.clientHeight - document.getElementById("icon-bar").clientHeight - horizontalBorders,
             moveTheApp = function (e) { //moves the app when the mouse is dragging it
                 if (e.clientX - xDiff > 0) {
                     if (e.clientX - xDiff < maxLeft) {
@@ -166,8 +185,10 @@ var Desktop = {
         var resizedElement = this.parentNode.parentNode,
             xDiff = resizedElement.clientWidth - event.clientX,
             yDiff = resizedElement.clientHeight - event.clientY,
-            maxWidth = resizedElement.parentNode.clientWidth - resizedElement.offsetLeft,
-            maxHeight = resizedElement.parentNode.clientHeight - resizedElement.offsetTop - document.getElementById("icon-bar").clientHeight,
+            verticalBorders = parseInt(getComputedStyle(resizedElement).getPropertyValue("border-left-width"), 10) + parseInt(getComputedStyle(resizedElement).getPropertyValue("border-right-width"), 10),
+            horizontalBorders = parseInt(getComputedStyle(resizedElement).getPropertyValue("border-top-width"), 10) + parseInt(getComputedStyle(resizedElement).getPropertyValue("border-bottom-width"), 10),
+            maxWidth = resizedElement.parentNode.clientWidth - resizedElement.offsetLeft - verticalBorders,
+            maxHeight = resizedElement.parentNode.clientHeight - resizedElement.offsetTop - document.getElementById("icon-bar").clientHeight - horizontalBorders,
             resizeTheApp = function (e) {
                 if (e.clientX + xDiff > 200) {
                     if (e.clientX + xDiff < maxWidth) {
