@@ -13,17 +13,24 @@ var Desktop = {
         var galleryApp = Desktop.openApp("Image gallery", "gallery-app", 300, 200),
             xhr = new XMLHttpRequest(),
             images,
-            i;
+            i,
+            a,
+            img;
         xhr.addEventListener("readystatechange", function () {
             if (xhr.readyState === 4) {
                 images = JSON.parse(xhr.responseText);
                 for (i = 0; i < images.length; i += 1) {
-                    console.log(images[i].URL);
+                    a = document.createElement("a");
+                    a.setAttribute("href", images[i].URL);
+                    img = document.createElement("img");
+                    img.setAttribute("src", images[i].thumbURL);
+                    a.appendChild(img);
+                    galleryApp.content.appendChild(a);
                 }
             }
         }, false);
         xhr.open("get", "http://homepage.lnu.se/staff/tstjo/labbyServer/imgviewer/", true);
-        //xhr.send();
+        xhr.send();
     },
     openRssApp : function () {
         "use strict";
@@ -66,6 +73,7 @@ var Desktop = {
         topBar.appendChild(closeApp);
         topBar.appendChild(maximizeApp);
         topBar.addEventListener("mousedown", Desktop.moveApp, false);
+        resizeApp.className = "icon-resize";
         resizeApp.addEventListener("mousedown", Desktop.resizeApp, false);
         statusBar.appendChild(resizeApp);
         appWindow.appendChild(topBar);
@@ -105,6 +113,7 @@ var Desktop = {
                 this.addEventListener("click", Desktop.maximizeApp, false);
                 this.parentNode.addEventListener("mousedown", Desktop.moveApp, false);
                 this.className = "icon-expand";
+                app.classList.remove("maximized");
             };
         this.removeEventListener("click", Desktop.maximizeApp, false);
         this.addEventListener("click", unmaximizeApp, false);
@@ -114,6 +123,7 @@ var Desktop = {
         app.style.top = "0px";
         app.style.width = app.parentNode.clientWidth + "px";
         app.style.height = app.parentNode.clientHeight - document.getElementById("icon-bar").clientHeight + "px";
+        app.classList.add("maximized");
     },
     moveApp : function (event) { //prepares to move the app
         "use strict";
