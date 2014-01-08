@@ -10,7 +10,9 @@ var Desktop = {
     },
     openGalleryApp : function () {
         "use strict";
-        var galleryApp = Desktop.openApp("Image gallery", "gallery-app", 300, 200),
+        var startTime = new Date().getTime(),
+            loadingTime,
+            galleryApp = Desktop.openApp("Image gallery", "gallery-app", 300, 200),
             xhr = new XMLHttpRequest(),
             images,
             i,
@@ -20,6 +22,7 @@ var Desktop = {
             maxH = 0,
             loader = setTimeout(function () {
             galleryApp["status"].classList.add("loading");
+            galleryApp["status"].appendChild(document.createTextNode("Loading..."));
         }, 300);
         xhr.addEventListener("readystatechange", function () {
             if (xhr.readyState === 4) {
@@ -44,6 +47,11 @@ var Desktop = {
                 }
                 clearTimeout(loader);
                 galleryApp["status"].classList.remove("loading");
+                if (galleryApp["status"].firstChild) {
+                    galleryApp["status"].removeChild(galleryApp["status"].firstChild);
+                }
+                loadingTime = new Date().getTime() - startTime;
+                galleryApp["status"].appendChild(document.createTextNode(images.length + " images loaded in " + loadingTime + " ms."));
             }
         }, false);
         xhr.open("get", "http://homepage.lnu.se/staff/tstjo/labbyServer/imgviewer/", true);

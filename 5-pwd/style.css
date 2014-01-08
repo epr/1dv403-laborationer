@@ -174,9 +174,19 @@ body {
 }
 .app footer p {
     margin: 0;
+    padding-top: 10px;
+    font-family: Consolas;
+    font-size: 12px;
+    padding-left: 8px;
+}
+.app footer p.loading {
+    padding-left: 31px;
 }
 .app footer p.loading:before {
     content: url("loader.gif");
+    position: absolute;
+    left: 8px;
+    top: 8px;
 }
 /*Gallery app*/
 .gallery-app {
