@@ -178,6 +178,7 @@ body {
     font-family: Consolas;
     font-size: 12px;
     padding-left: 8px;
+    color: #555;
 }
 .app footer p.loading {
     padding-left: 31px;
@@ -222,4 +223,14 @@ body {
 }
 .rss-app header:before {
     background-image: url(img/rss.png);
+}
+/*Image window*/
+.image {
+    background: white;
+}
+.image header {
+    background: yellow;
+}
+.image img {
+    vertical-align: middle;
 }

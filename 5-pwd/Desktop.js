@@ -12,7 +12,7 @@ var Desktop = {
         "use strict";
         var startTime = new Date().getTime(),
             loadingTime,
-            galleryApp = Desktop.openApp("Image gallery", "gallery-app", 300, 200),
+            galleryApp = Desktop.openApp("Image gallery", "gallery-app", 500, 350),
             xhr = new XMLHttpRequest(),
             images,
             i,
@@ -22,8 +22,8 @@ var Desktop = {
             maxH = 0,
             loader = setTimeout(function () {
             galleryApp["status"].classList.add("loading");
-            galleryApp["status"].appendChild(document.createTextNode("Loading..."));
-        }, 300);
+                galleryApp["status"].appendChild(document.createTextNode("Loading..."));
+            }, 300);
         xhr.addEventListener("readystatechange", function () {
             if (xhr.readyState === 4) {
                 images = JSON.parse(xhr.responseText);
@@ -38,10 +38,14 @@ var Desktop = {
                 for (i = 0; i < images.length; i += 1) {
                     a = document.createElement("a");
                     a.setAttribute("href", images[i].URL);
+                    a.setAttribute("data-width", images[i].width);
+                    a.setAttribute("data-height", images[i].height);
                     a.style.width = maxW + "px";
                     a.style.height = maxH + "px";
+                    a.addEventListener("click", Desktop.openImageWindow, false);
                     img = document.createElement("img");
                     img.setAttribute("src", images[i].thumbURL);
+                    console.log(img.width);
                     a.appendChild(img);
                     galleryApp["content"].appendChild(a);
                 }
@@ -81,6 +85,9 @@ var Desktop = {
         }
         if ((desktop.clientHeight - appHeight - 10 - iconBar.clientHeight) < Desktop.lastAppPosY) {
             Desktop.lastAppPosY = 10;
+            if (Desktop.lastAppPosY + appHeight + 10 > desktop.clientHeight - iconBar.clientHeight) {
+                appHeight = desktop.clientHeight - Desktop.lastAppPosY - 10 - iconBar.clientHeight;
+            }
         }
         appWindow.style.left = Desktop.lastAppPosX + "px";
         appWindow.style.top = Desktop.lastAppPosY + "px";
@@ -107,6 +114,13 @@ var Desktop = {
         desktop.appendChild(appWindow);
         Desktop.bringToFront.call(appWindow); //brins the app window to the front by passing it as "this"
         return {"app" : appWindow, "content" : content, "status" : statusText};
+    },
+    openImageWindow : function (e) {
+        e.preventDefault();
+        var imageWindow = Desktop.openApp("Image", "image", this.getAttribute("data-width"), +this.getAttribute("data-height") + 64),
+            img = document.createElement("img");
+        img.setAttribute("src", this.href);
+        imageWindow["content"].appendChild(img);
     },
     bringToFront : function () { //brings the selected application window to the top
         "use strict";
