@@ -1,6 +1,7 @@
 /*jslint browser:true*/
 var Desktop = {
     desktopPadding : 10,
+    positionIncrement : 10,
     lastAppPosX : 0,
     lastAppPosY : 0,
     appZ : 0,
@@ -18,7 +19,7 @@ var Desktop = {
         "use strict";
         var startTime = new Date().getTime(),
             loadingTime,
-            galleryApp = Desktop.openApp("Image gallery", "gallery-app", 500, 350),
+            galleryApp = Desktop.openApp("Image gallery", "gallery-app", 450, 350),
             xhr = new XMLHttpRequest(),
             images,
             i,
@@ -27,7 +28,7 @@ var Desktop = {
             maxW = 0,
             maxH = 0,
             loader = setTimeout(function () {
-            galleryApp["status"].classList.add("loading");
+                galleryApp["status"].classList.add("loading");
                 galleryApp["status"].appendChild(document.createTextNode("Loading..."));
             }, 300);
         xhr.addEventListener("readystatechange", function () {
@@ -68,7 +69,40 @@ var Desktop = {
     },
     openRssApp : function () {
         "use strict";
-        var rssApp = Desktop.openApp("Rss feed", "rss-app", 200, 280);
+        var rssApp = Desktop.openApp("Rss feed", "rss-app", 300, 400),
+            xhr = new XMLHttpRequest(),
+            url = "http://feeds.bbci.co.uk/news/world/rss.xml",
+            loader = setTimeout(function () {
+                rssApp["status"].classList.add("loading");
+                rssApp["status"].appendChild(document.createTextNode("Loading..."));
+            }, 300),
+            updateTime,
+            updateHours,
+            updateMinutes;
+        xhr.addEventListener("readystatechange", function () {
+            if (xhr.readyState === 4) {
+                rssApp["content"].innerHTML = xhr.responseText;
+                clearTimeout(loader);
+                rssApp["status"].classList.remove("loading");
+                if (rssApp["status"].firstChild) {
+                    rssApp["status"].removeChild(rssApp["status"].firstChild);
+                }
+                updateTime = new Date();
+                if (updateTime.getHours() < 10) {
+                    updateHours = "0" + updateTime.getHours();
+                } else {
+                    updateHours = updateTime.getHours();
+                }
+                if (updateTime.getMinutes() < 10) {
+                    updateMinutes = "0" + updateTime.getMinutes();
+                } else {
+                    updateMinutes = updateTime.getMinutes();
+                }
+                rssApp["status"].appendChild(document.createTextNode("Last updated " + updateHours + ":" + updateMinutes));
+            }
+        }, false);
+        xhr.open("get", "http://homepage.lnu.se/staff/tstjo/labbyServer/rssproxy/?url=" + escape(url), true);
+        xhr.send();
     },
     openApp : function (title, appClass, appWidth, appHeight) {
         "use strict";
@@ -99,8 +133,8 @@ var Desktop = {
         appWindow.style.width = appWidth + "px";
         appWindow.style.height = appHeight + "px";
         appWindow.addEventListener("mousedown", Desktop.bringToFront, false);
-        Desktop.lastAppPosX += 10;
-        Desktop.lastAppPosY += 10;
+        Desktop.lastAppPosX += Desktop.positionIncrement;
+        Desktop.lastAppPosY += Desktop.positionIncrement;
         maximizeApp.className = "icon-expand";
         maximizeApp.addEventListener("click", Desktop.maximizeApp, false);
         closeApp.className = "icon-close";
