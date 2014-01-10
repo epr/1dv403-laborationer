@@ -196,7 +196,7 @@ body {
 .gallery-app header {
     background-color: #daba55;
 }
-.gallery-app header:before {
+.gallery-app header:before, .image header:before {
     background-image: url(img/gallery.png);
 }
 .gallery-app article {

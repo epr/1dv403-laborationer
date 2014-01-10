@@ -7,6 +7,7 @@ var Desktop = {
         "use strict";
         document.getElementById("gallery-icon").addEventListener("click", Desktop.openGalleryApp, false);
         document.getElementById("rss-icon").addEventListener("click", Desktop.openRssApp, false);
+        document.onselectstart = function() {return false;};
     },
     openGalleryApp : function () {
         "use strict";
@@ -116,6 +117,7 @@ var Desktop = {
         return {"app" : appWindow, "content" : content, "status" : statusText};
     },
     openImageWindow : function (e) {
+        "use strict";
         e.preventDefault();
         var imageWindow = Desktop.openApp("Image", "image", this.getAttribute("data-width"), +this.getAttribute("data-height") + 64),
             img = document.createElement("img");
