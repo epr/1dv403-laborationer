@@ -1,13 +1,18 @@
 /*jslint browser:true*/
 var Desktop = {
-    lastAppPosX : 10,
-    lastAppPosY : 10,
+    desktopPadding : 10,
+    lastAppPosX : 0,
+    lastAppPosY : 0,
     appZ : 0,
     init : function () {
         "use strict";
         document.getElementById("gallery-icon").addEventListener("click", Desktop.openGalleryApp, false);
         document.getElementById("rss-icon").addEventListener("click", Desktop.openRssApp, false);
-        document.onselectstart = function() {return false;};
+        document.addEventListener("selectstart", function (e) {
+            e.preventDefault();
+        }, false);
+        Desktop.lastAppPosX = Desktop.desktopPadding;
+        Desktop.lastAppPosY = Desktop.desktopPadding;
     },
     openGalleryApp : function () {
         "use strict";
@@ -46,7 +51,6 @@ var Desktop = {
                     a.addEventListener("click", Desktop.openImageWindow, false);
                     img = document.createElement("img");
                     img.setAttribute("src", images[i].thumbURL);
-                    console.log(img.width);
                     a.appendChild(img);
                     galleryApp["content"].appendChild(a);
                 }
@@ -81,13 +85,13 @@ var Desktop = {
             statusText = document.createElement("p"),
             resizeApp = document.createElement("button");
         appWindow.classList.add(appClass, "app");
-        if ((desktop.clientWidth - appWidth - 10) < Desktop.lastAppPosX) {
-            Desktop.lastAppPosX = 10;
+        if ((desktop.clientWidth - appWidth - Desktop.desktopPadding) < Desktop.lastAppPosX) {
+            Desktop.lastAppPosX = Desktop.desktopPadding;
         }
-        if ((desktop.clientHeight - appHeight - 10 - iconBar.clientHeight) < Desktop.lastAppPosY) {
-            Desktop.lastAppPosY = 10;
-            if (Desktop.lastAppPosY + appHeight + 10 > desktop.clientHeight - iconBar.clientHeight) {
-                appHeight = desktop.clientHeight - Desktop.lastAppPosY - 10 - iconBar.clientHeight;
+        if ((desktop.clientHeight - appHeight - Desktop.desktopPadding - iconBar.clientHeight) < Desktop.lastAppPosY) {
+            Desktop.lastAppPosY = Desktop.desktopPadding;
+            if (Desktop.lastAppPosY + appHeight + Desktop.desktopPadding > desktop.clientHeight - iconBar.clientHeight) {
+                appHeight = desktop.clientHeight - Desktop.lastAppPosY - Desktop.desktopPadding - iconBar.clientHeight;
             }
         }
         appWindow.style.left = Desktop.lastAppPosX + "px";
