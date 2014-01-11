@@ -75,6 +75,7 @@ var Desktop = {
             loader,
             updateTime,
             interval,
+            intervalMinutes = 1,
             updateFeed = function () {
                 if (document.contains(rssApp["app"])) {
                     loader = setTimeout(function () {
@@ -90,9 +91,47 @@ var Desktop = {
                     clearInterval(interval);
                 }
             },
-            changeInterval = function (s) {
+            changeInterval = function () {
                 clearInterval(interval);
-                interval = setInterval(updateFeed, s * 1000);
+                interval = setInterval(updateFeed, intervalMinutes * 60000);
+            },
+            openRssMenu = function () {
+                var menu = Desktop.openMenu(),
+                    menuInterval = document.createElement("button"),
+                    menuSource = document.createElement("button"),
+                    menuUpdate = document.createElement("button");
+                menuInterval.className = "icon-time";
+                menuInterval.addEventListener("click", openSourceMenu, false);
+                menu.appendChild(menuInterval).appendChild(document.createTextNode("Update interval..."));
+                menuSource.className = "icon-source";
+                menu.appendChild(menuSource).appendChild(document.createTextNode("Source..."));
+                menuUpdate.className = "icon-refresh";
+                menuUpdate.addEventListener("click", updateFeed, false);
+                menu.appendChild(menuUpdate).appendChild(document.createTextNode("Update now"));
+                menu.style.left = this.offsetLeft + this.parentNode.parentNode.offsetLeft + this.clientWidth + parseInt(getComputedStyle(this.parentNode.parentNode).getPropertyValue("border-left-width"), 10) - menu.clientWidth + "px";
+                menu.style.top = this.offsetTop + this.parentNode.parentNode.offsetTop + this.clientHeight + parseInt(getComputedStyle(this.parentNode.parentNode).getPropertyValue("border-top-width"), 10) + "px";
+            },
+            openSourceMenu = function () {
+                var menu = Desktop.openMenu(),
+                    slider = document.createElement("input"),
+                    sliderText = document.createElement("span");
+                slider.setAttribute("type", "range");
+                slider.setAttribute("min", "1");
+                slider.setAttribute("max", "5");
+                slider.setAttribute("step", "1");
+                slider.setAttribute("value", intervalMinutes);
+                slider.addEventListener("change", function () {
+                    intervalMinutes = slider.value;
+                    changeInterval();
+                    sliderText.innerHTML = slider.value + " min";
+                }, false);
+                sliderText.innerHTML = slider.value + " min";
+                menu.appendChild(slider);
+                menu.appendChild(sliderText);
+                console.log(this.parentNode.parentNode);
+                menu.style.left = rssApp["app"].offsetLeft + parseInt(getComputedStyle(rssApp["app"]).getPropertyValue("border-left-width"), 10) + "px";
+                menu.style.top = rssApp["app"].offsetTop + rssApp["content"].offsetTop + parseInt(getComputedStyle(rssApp["app"]).getPropertyValue("border-top-width"), 10) + "px";
+                menu.style.width = rssApp["app"].clientWidth + "px";
             };
         xhr.addEventListener("readystatechange", function () {
             if (xhr.readyState === 4) {
@@ -106,24 +145,9 @@ var Desktop = {
                 rssApp["status"].appendChild(document.createTextNode("Last updated " + Desktop.leadingZero(updateTime.getHours()) + ":" + Desktop.leadingZero(updateTime.getMinutes()) + ":" + Desktop.leadingZero(updateTime.getSeconds())));
             }
         }, false);
-        rssApp["menu"].addEventListener("click", function () {
-            //url = "http://rss.cnn.com/rss/edition_world.rss";
-            var menu = Desktop.openMenu(),
-                menuInterval = document.createElement("button"),
-                menuSource = document.createElement("button"),
-                menuUpdate = document.createElement("button");
-            menuInterval.className = "icon-time";
-            menu["menu"].appendChild(menuInterval).appendChild(document.createTextNode("Update interval..."));
-            menuSource.className = "icon-source";
-            menu["menu"].appendChild(menuSource).appendChild(document.createTextNode("Source..."));
-            menuUpdate.className = "icon-refresh";
-            menuUpdate.addEventListener("click", updateFeed, false);
-            menu["menu"].appendChild(menuUpdate).appendChild(document.createTextNode("Update now"));
-            menu["menu"].style.left = this.offsetLeft + this.parentNode.parentNode.offsetLeft + parseInt(getComputedStyle(this.parentNode.parentNode).getPropertyValue("border-left-width"), 10) + "px";
-            menu["menu"].style.top = this.offsetTop + this.parentNode.parentNode.offsetTop + this.clientHeight + parseInt(getComputedStyle(this.parentNode.parentNode).getPropertyValue("border-top-width"), 10) + "px";
-        }, false);
+        rssApp["menu"].addEventListener("click", openRssMenu, false);
         updateFeed();
-        changeInterval(60);
+        changeInterval(1);
     },
     openMenu : function (e) {
         "use strict";
@@ -141,7 +165,7 @@ var Desktop = {
         }, false);
         cover.appendChild(menu);
         desktop.appendChild(cover);
-        return {"menu" : menu, "cover" : cover};
+        return menu;
     },
     openImageWindow : function (e) {
         "use strict";

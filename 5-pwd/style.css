@@ -257,7 +257,7 @@ body {
 }
 /*Menu*/
 menu {
-    background: blue;
+    background: #ccc;
     margin: 0;
     padding: 0;
     display: inline-block;
@@ -277,4 +277,7 @@ menu button:before {
 }
 menu button:hover {
     background: #ccc;
+}
+menu input[type=range] {
+    width: 70%;
 }
