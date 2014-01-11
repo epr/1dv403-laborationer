@@ -61,7 +61,7 @@ var Desktop = {
                     galleryApp["status"].removeChild(galleryApp["status"].firstChild);
                 }
                 loadingTime = new Date().getTime() - startTime;
-                galleryApp["status"].appendChild(document.createTextNode(images.length + " images loaded in " + loadingTime + " ms."));
+                galleryApp["status"].appendChild(document.createTextNode(images.length + " images loaded in " + loadingTime + " ms"));
             }
         }, false);
         xhr.open("get", "http://homepage.lnu.se/staff/tstjo/labbyServer/imgviewer/", true);
@@ -72,13 +72,28 @@ var Desktop = {
         var rssApp = Desktop.openApp("Rss feed", "rss-app", 300, 400),
             xhr = new XMLHttpRequest(),
             url = "http://feeds.bbci.co.uk/news/world/rss.xml",
-            loader = setTimeout(function () {
-                rssApp["status"].classList.add("loading");
-                rssApp["status"].appendChild(document.createTextNode("Loading..."));
-            }, 300),
+            loader,
             updateTime,
-            updateHours,
-            updateMinutes;
+            interval,
+            updateFeed = function () {
+                if (document.contains(rssApp["app"])) {
+                    loader = setTimeout(function () {
+                        rssApp["status"].classList.add("loading");
+                        if (rssApp["status"].firstChild) {
+                            rssApp["status"].removeChild(rssApp["status"].firstChild);
+                        }
+                        rssApp["status"].appendChild(document.createTextNode("Updating..."));
+                    }, 300);
+                    xhr.open("get", "http://homepage.lnu.se/staff/tstjo/labbyServer/rssproxy/?url=" + escape(url), true);
+                    xhr.send();
+                } else {
+                    clearInterval(interval);
+                }
+            },
+            changeInterval = function (s) {
+                clearInterval(interval);
+                interval = setInterval(updateFeed, s * 1000);
+            };
         xhr.addEventListener("readystatechange", function () {
             if (xhr.readyState === 4) {
                 rssApp["content"].innerHTML = xhr.responseText;
@@ -88,21 +103,53 @@ var Desktop = {
                     rssApp["status"].removeChild(rssApp["status"].firstChild);
                 }
                 updateTime = new Date();
-                if (updateTime.getHours() < 10) {
-                    updateHours = "0" + updateTime.getHours();
-                } else {
-                    updateHours = updateTime.getHours();
-                }
-                if (updateTime.getMinutes() < 10) {
-                    updateMinutes = "0" + updateTime.getMinutes();
-                } else {
-                    updateMinutes = updateTime.getMinutes();
-                }
-                rssApp["status"].appendChild(document.createTextNode("Last updated " + updateHours + ":" + updateMinutes));
+                rssApp["status"].appendChild(document.createTextNode("Last updated " + Desktop.leadingZero(updateTime.getHours()) + ":" + Desktop.leadingZero(updateTime.getMinutes()) + ":" + Desktop.leadingZero(updateTime.getSeconds())));
             }
         }, false);
-        xhr.open("get", "http://homepage.lnu.se/staff/tstjo/labbyServer/rssproxy/?url=" + escape(url), true);
-        xhr.send();
+        rssApp["menu"].addEventListener("click", function () {
+            //url = "http://rss.cnn.com/rss/edition_world.rss";
+            var menu = Desktop.openMenu(),
+                menuInterval = document.createElement("button"),
+                menuSource = document.createElement("button"),
+                menuUpdate = document.createElement("button");
+            menuInterval.className = "icon-time";
+            menu["menu"].appendChild(menuInterval).appendChild(document.createTextNode("Update interval..."));
+            menuSource.className = "icon-source";
+            menu["menu"].appendChild(menuSource).appendChild(document.createTextNode("Source..."));
+            menuUpdate.className = "icon-refresh";
+            menuUpdate.addEventListener("click", updateFeed, false);
+            menu["menu"].appendChild(menuUpdate).appendChild(document.createTextNode("Update now"));
+            menu["menu"].style.left = this.offsetLeft + this.parentNode.parentNode.offsetLeft + parseInt(getComputedStyle(this.parentNode.parentNode).getPropertyValue("border-left-width"), 10) + "px";
+            menu["menu"].style.top = this.offsetTop + this.parentNode.parentNode.offsetTop + this.clientHeight + parseInt(getComputedStyle(this.parentNode.parentNode).getPropertyValue("border-top-width"), 10) + "px";
+        }, false);
+        updateFeed();
+        changeInterval(60);
+    },
+    openMenu : function (e) {
+        "use strict";
+        var cover = document.createElement("div"),
+            menu = document.createElement("menu"),
+            desktop = document.getElementById("desktop");
+        cover.style.position = "absolute";
+        cover.style.top = "0px";
+        cover.style.left = "0px";
+        cover.style.width = desktop.clientWidth + "px";
+        cover.style.height = desktop.clientHeight + "px";
+        cover.style.zIndex = 10000;
+        cover.addEventListener("click", function () {
+            desktop.removeChild(cover);
+        }, false);
+        cover.appendChild(menu);
+        desktop.appendChild(cover);
+        return {"menu" : menu, "cover" : cover};
+    },
+    openImageWindow : function (e) {
+        "use strict";
+        e.preventDefault();
+        var imageWindow = Desktop.openApp("Image", "image", this.getAttribute("data-width"), +this.getAttribute("data-height") + 64),
+            img = document.createElement("img");
+        img.setAttribute("src", this.href);
+        imageWindow["content"].appendChild(img);
     },
     openApp : function (title, appClass, appWidth, appHeight) {
         "use strict";
@@ -112,6 +159,7 @@ var Desktop = {
             topBar = document.createElement("header"),
             appTitle = document.createElement("h2"),
             titleText = document.createTextNode(title),
+            contextMenu = document.createElement("button"),
             maximizeApp = document.createElement("button"),
             closeApp = document.createElement("button"),
             content = document.createElement("article"),
@@ -135,6 +183,7 @@ var Desktop = {
         appWindow.addEventListener("mousedown", Desktop.bringToFront, false);
         Desktop.lastAppPosX += Desktop.positionIncrement;
         Desktop.lastAppPosY += Desktop.positionIncrement;
+        contextMenu.className = "icon-menu"
         maximizeApp.className = "icon-expand";
         maximizeApp.addEventListener("click", Desktop.maximizeApp, false);
         closeApp.className = "icon-close";
@@ -142,6 +191,7 @@ var Desktop = {
         topBar.appendChild(appTitle).appendChild(titleText);
         topBar.appendChild(closeApp);
         topBar.appendChild(maximizeApp);
+        topBar.appendChild(contextMenu);
         topBar.addEventListener("mousedown", Desktop.moveApp, false);
         resizeApp.className = "icon-resize";
         resizeApp.addEventListener("mousedown", Desktop.resizeApp, false);
@@ -152,15 +202,7 @@ var Desktop = {
         appWindow.appendChild(statusBar);
         desktop.appendChild(appWindow);
         Desktop.bringToFront.call(appWindow); //brins the app window to the front by passing it as "this"
-        return {"app" : appWindow, "content" : content, "status" : statusText};
-    },
-    openImageWindow : function (e) {
-        "use strict";
-        e.preventDefault();
-        var imageWindow = Desktop.openApp("Image", "image", this.getAttribute("data-width"), +this.getAttribute("data-height") + 64),
-            img = document.createElement("img");
-        img.setAttribute("src", this.href);
-        imageWindow["content"].appendChild(img);
+        return {"app" : appWindow, "content" : content, "status" : statusText, "menu" : contextMenu};
     },
     bringToFront : function () { //brings the selected application window to the top
         "use strict";
@@ -279,6 +321,13 @@ var Desktop = {
         resizedElement.classList.add("resizing");
         document.addEventListener("mousemove", resizeTheApp, false);
         document.addEventListener("mouseup", leaveApp, false);
+    },
+    leadingZero : function (number) {
+        "use strict";
+        if (number < 10) {
+            number = "0" + number;
+        }
+        return number;
     }
 };
 document.load = Desktop.init();

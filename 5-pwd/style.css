@@ -32,10 +32,10 @@
 .icon-feed:before {
 	content: "\e603";
 }
-.icon-dice:before {
+.icon-game:before {
 	content: "\e604";
 }
-.icon-bubbles:before {
+.icon-chat:before {
 	content: "\e605";
 }
 .icon-close:before {
@@ -43,6 +43,24 @@
 }
 .icon-resize:before {
 	content: "\e607";
+}
+.icon-menu:before {
+	content: "\e608";
+}
+.icon-time:before {
+	content: "\e609";
+}
+.icon-source:before {
+	content: "\e60a";
+}
+.icon-refresh:before {
+	content: "\e60b";
+}
+.icon-restart:before {
+	content: "\e60c";
+}
+.icon-settings:before {
+	content: "\e60d";
 }
 /*Desktop*/
 body {
@@ -137,6 +155,9 @@ body {
 }
 .app .icon-expand, .app .icon-contract {
     right: 24px;
+}
+.app .icon-menu {
+    right: 48px;
 }
 .app header button:active {
     padding: 8px;
@@ -233,4 +254,27 @@ body {
 }
 .image img {
     vertical-align: middle;
+}
+/*Menu*/
+menu {
+    background: blue;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    position: absolute;
+}
+menu button {
+    display: block;
+    border: 0;
+    background: #aaa;
+    padding: 8px;
+    margin: 0;
+    width: 100%;
+    text-align: left;
+}
+menu button:before {
+    margin-right: 4px;
+}
+menu button:hover {
+    background: #ccc;
 }
