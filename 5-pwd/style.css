@@ -28,12 +28,15 @@
 }
 .icon-camera:before {
 	content: "\e602";
+	color: white;
 }
 .icon-feed:before {
 	content: "\e603";
+	color: white;
 }
 .icon-game:before {
 	content: "\e604";
+	color: white;
 }
 .icon-chat:before {
 	content: "\e605";
@@ -86,15 +89,20 @@ body {
     border: 0;
     height: 64px;
     width: 64px;
+    margin: 0;
+    padding: 16px;
+    font-size: 32px;
+    float: left;
 }
 /*Icons*/ /*icons from http://dakirby309.deviantart.com/art/Metro-UI-Icon-Set-725-Icons-280724102*/
 #gallery-icon {
-    background: url("img/gallery.png");
-    background-size: 100%;
+    background: #00c;
 }
 #rss-icon {
-    background: url("img/rss.png");
-    background-size: 100%;
+    background: orange;
+}
+#game-icon {
+    background: #c00;
 }
 /*App*/
 .app {
@@ -244,6 +252,65 @@ body {
 }
 .rss-app header:before {
     background-image: url(img/rss.png);
+}
+/*Memory app*/
+.memory-app {
+    background: beige;
+}
+.memory-app header {
+    background: #c0c;
+}
+.memory-app ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+}
+.memory-app li {
+    float: left;
+}
+.memory-app img {
+    padding: 1em;
+    margin: 1px;
+    border: 2px solid #999;
+    vertical-align: middle;
+}
+.memory-app img:hover {
+    cursor: default;
+}
+.memory-app img[src="pics/0.png"] {
+    border-color: #ccc;
+}
+.memory-app img[src="pics/0.png"]:hover {
+    border-color: #999;
+    cursor: pointer;
+}
+.memory-app img.found {
+    opacity: .5;
+    cursor: default;
+}
+.memory-app aside {
+    display: inline-block;
+    vertical-align: top;
+    overflow: auto;
+}
+.memory-app h3, .memory-app h3 + p {
+    opacity: .5;
+    margin: 0 0 2px;
+    padding: .78em;
+    font: 1.4em "Helvetica";
+    border: 2px solid #999;
+    float: left;
+}
+.memory-app h3 {
+    border-right: none;
+    clear: left;
+}
+.memory-app h3 + p {
+    border-left: none;
+}
+.memory-app h3.current, .memory-app h3.current + p {
+    opacity: 1;
 }
 /*Image window*/
 .image {
