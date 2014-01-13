@@ -101,9 +101,10 @@ var Desktop = {
                     menuSource = document.createElement("button"),
                     menuUpdate = document.createElement("button");
                 menuInterval.className = "icon-time";
-                menuInterval.addEventListener("click", openSourceMenu, false);
+                menuInterval.addEventListener("click", openIntervalMenu, false);
                 menu.appendChild(menuInterval).appendChild(document.createTextNode("Update interval..."));
                 menuSource.className = "icon-source";
+                menuSource.addEventListener("click", openSourceMenu, false);
                 menu.appendChild(menuSource).appendChild(document.createTextNode("Source..."));
                 menuUpdate.className = "icon-refresh";
                 menuUpdate.addEventListener("click", updateFeed, false);
@@ -111,7 +112,7 @@ var Desktop = {
                 menu.style.left = this.offsetLeft + this.parentNode.parentNode.offsetLeft + this.clientWidth + parseInt(getComputedStyle(this.parentNode.parentNode).getPropertyValue("border-left-width"), 10) - menu.clientWidth + "px";
                 menu.style.top = this.offsetTop + this.parentNode.parentNode.offsetTop + this.clientHeight + parseInt(getComputedStyle(this.parentNode.parentNode).getPropertyValue("border-top-width"), 10) + "px";
             },
-            openSourceMenu = function () {
+            openIntervalMenu = function () {
                 var menu = Desktop.openMenu(),
                     slider = document.createElement("input"),
                     sliderText = document.createElement("span");
@@ -131,7 +132,17 @@ var Desktop = {
                 console.log(this.parentNode.parentNode);
                 menu.style.left = rssApp["app"].offsetLeft + parseInt(getComputedStyle(rssApp["app"]).getPropertyValue("border-left-width"), 10) + "px";
                 menu.style.top = rssApp["app"].offsetTop + rssApp["content"].offsetTop + parseInt(getComputedStyle(rssApp["app"]).getPropertyValue("border-top-width"), 10) + "px";
-                menu.style.width = rssApp["app"].clientWidth + "px";
+                menu.style.width = rssApp["app"].clientWidth - 20 + "px";
+                menu.className = "slider-menu";
+            },
+            openSourceMenu = function () {
+                var menu = Desktop.openMenu();
+                menu.addEventListener("click", function (e) {
+                    //e.stopPropagation();
+                }, false);
+                    menu.style.background = "red";
+                    menu.style.width = "100px";
+                    menu.style.height = "100px";
             };
         xhr.addEventListener("readystatechange", function () {
             if (xhr.readyState === 4) {
@@ -149,7 +160,7 @@ var Desktop = {
         updateFeed();
         changeInterval(1);
     },
-    openMenu : function (e) {
+    openMenu : function () {
         "use strict";
         var cover = document.createElement("div"),
             menu = document.createElement("menu"),

@@ -278,6 +278,17 @@ menu button:before {
 menu button:hover {
     background: #ccc;
 }
+menu.slider-menu {
+    padding: 10px;
+}
 menu input[type=range] {
-    width: 70%;
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+}
+menu input[type=range] + span {
+    margin: auto;
+    width: 100px;
+    display: block;
+    font-size: 2em;
 }
