@@ -67,6 +67,7 @@ var Desktop = {
         }, false);
         xhr.open("get", "http://homepage.lnu.se/staff/tstjo/labbyServer/imgviewer/", true);
         xhr.send();
+        galleryApp["header"].classList.add("icon-camera");
     },
     openRssApp : function () {
         "use strict";
@@ -160,11 +161,13 @@ var Desktop = {
         rssApp["menu"].addEventListener("click", openRssMenu, false);
         updateFeed();
         changeInterval(1);
+        rssApp["header"].classList.add("icon-feed");
     },
     openMemoryApp : function () {
         "use strict";
         var memoryApp = Desktop.openApp("Memory", "memory-app", 248, 312);
         Memory.init(memoryApp["content"]);
+        memoryApp["header"].classList.add("icon-game");
     },
     openMenu : function () {
         "use strict";
@@ -243,7 +246,7 @@ var Desktop = {
         appWindow.appendChild(statusBar);
         desktop.appendChild(appWindow);
         Desktop.bringToFront.call(appWindow); //brins the app window to the front by passing it as "this"
-        return {"app" : appWindow, "content" : content, "status" : statusText, "menu" : contextMenu};
+        return {"app" : appWindow, "content" : content, "status" : statusText, "menu" : contextMenu, "header" : topBar};
     },
     bringToFront : function () { //brings the selected application window to the top
         "use strict";
@@ -514,7 +517,7 @@ var Memory = {
     timer : null,
     updateScore : function () {
         "use strict";
-        var aside = document.getElementById("score"),
+        /*var aside = document.getElementById("score"),
             h3,
             p;
         aside.innerHTML = "";
@@ -535,7 +538,7 @@ var Memory = {
         p = document.createElement("p");
         p.innerHTML = Memory.two;
         aside.appendChild(h3);
-        aside.appendChild(p);
+        aside.appendChild(p);*/
     }
 };
 var Generator = {
