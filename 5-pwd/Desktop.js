@@ -194,6 +194,7 @@ var Desktop = {
             img = document.createElement("img");
         img.setAttribute("src", this.href);
         imageWindow["content"].appendChild(img);
+        imageWindow["header"].classList.add("icon-camera");
     },
     openApp : function (title, appClass, appWidth, appHeight) {
         "use strict";
