@@ -111,7 +111,7 @@ body {
 .app {
     position: absolute;
     box-shadow: 0 0 2px 0 #222;
-    border: 10px solid #333;
+    border: 1px solid #333;
 }
 .app.moving {
     opacity: .7;
