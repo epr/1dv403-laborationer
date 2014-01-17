@@ -20,6 +20,9 @@
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
+main {
+    display: block;
+}
 .icon-expand:before {
 	content: "\e600";
 }
@@ -108,7 +111,7 @@ body {
 .app {
     position: absolute;
     box-shadow: 0 0 2px 0 #222;
-    border: 1px solid #333;
+    border: 10px solid #333;
 }
 .app.moving {
     opacity: .7;
@@ -245,10 +248,17 @@ body {
 }
 /*RSS app*/
 .rss-app {
-    background: #da55ba;
+    background: white;
 }
 .rss-app header {
     background-color: orange;
+}
+.rss-app article {
+    font-family: Georgia, serif;
+}
+.rss-app article h2 {
+    background: #ccc;
+    display: block;
 }
 /*Memory app*/
 .memory-app {

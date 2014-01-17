@@ -574,4 +574,4 @@ var Generator = {
         return pairsArray;
     }
 };
-document.load = Desktop.init();
+document.load = Desktop.init;
